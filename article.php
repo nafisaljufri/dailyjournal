@@ -145,7 +145,7 @@ include "upload_foto.php";
 //jika tombol simpan diklik
 if (isset($_POST['simpan'])) {
     $judul = $_POST['judul'];
-    $isi = $_POST['isi'];
+    $isi = $_POST['harga'];
     $tanggal = date("Y-m-d H:i:s");
     $username = $_SESSION['username'];
     $gambar = '';
@@ -181,13 +181,13 @@ if (isset($_POST['simpan'])) {
             $gambar = $_POST['gambar_lama'];
         } else {
             //jika ganti gambar, hapus gambar lama
-            unlink("img/" . $_POST['gambar_lama']);
+            unlink("image/" . $_POST['gambar_lama']);
         }
 
         $stmt = $conn->prepare("UPDATE article 
                                 SET 
                                 judul =?,
-                                isi =?,
+                                harga =?,
                                 gambar = ?,
                                 tanggal = ?,
                                 username = ?
@@ -227,7 +227,7 @@ if (isset($_POST['hapus'])) {
 
     if ($gambar != '') {
         //hapus file gambar
-        unlink("img/" . $gambar);
+        unlink("image/" . $gambar);
     }
 
     $stmt = $conn->prepare("DELETE FROM article WHERE id =?");
