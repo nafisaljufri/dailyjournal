@@ -178,7 +178,6 @@ include "koneksi.php";
         </div>
     </div>
 </section>
-
     <!-- gallery end -->
     <!-- footer begin -->
     <footer class="ms-auto p-5 text-center">
