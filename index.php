@@ -35,13 +35,13 @@ include "koneksi.php";
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0 text-dark">
               <li class="nav-item ms-5">
-                <a class="nav-link" aria-current="page" href="#gallery"><b>PRIA</b></a>
+                <a class="nav-link" aria-current="page" href="#"><b>HOME</b></a>
               </li>
               <li class="nav-item ms-5">
-                <a class="nav-link" href="#article"><b>WANITA</b></a>
+                <a class="nav-link" href="#article"><b>ARTICLE</b></a>
               </li>
               <li class="nav-item ms-5">
-                <a class="nav-link" href="#article"><b>ANAK</b></a>
+                <a class="nav-link" href="#gallery"><b>GALLERY</b></a>
               </li>
               <li class="nav-item1 ms-5 dropdown">
                 <a class="nav-link dropdown-toggle" href="#gallery" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -136,55 +136,49 @@ include "koneksi.php";
 <!-- article end -->
     <!-- gallery begin -->
     <section id="gallery" class="text-center p-4 bg-secondary-subtle">
-        <div class="container">
-            <div id="carouselExampleCaptions" class="carousel slide">
-              <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
-              </div>
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="image/Adidas-java.jpg" class="d-block w-100">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>ADIDAS JAVA COLLECTION</h5>
-                    <p>Menghadirkan kembali sepatu ikonis OG adidas Java dipadukan dengan Java tee yang penuh warna dan Java bag yang elegan, bikin penampilan kamu makin maksimal.​</p>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <img src="image/Aidas-taek.jpg" class="d-block w-100">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>TAEKWONDO-INSPIRED SHOES</h5>
-                    <p>Sebuah gaya awal tahun 00-an dengan desain slip-on yang minimalis.</p>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <img src="image/JJJJound.jpg" class="d-block w-100">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>JJJJound & ADIDAS ORIGINALs</h5>
-                    <p>Terinspirasi oleh penampilan warisan sepak bola di luar lapangan.</p>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <img src="image/Adidas-walesbonner.jpg" class="d-block w-100" alt="...">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>ADIDAS WALES BONNER</h5>
-                    <p>Musim ini, adidas Originals dan Wales Bonner melanjutkan kemitraan kolaborasi berkelanjutan mereka dengan koleksi Musim Semi/Musim Panas 2023.</p>
-                  </div>
-                </div>
-              </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <div class="container">
+        <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-indicators">
+                <?php
+                $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+                $hasil = $conn->query($sql);
+                $counter = 0;
+
+                // Generate indicators dynamically
+                while ($row = $hasil->fetch_assoc()) {
+                    echo '<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="' . $counter . '" class="' . ($counter === 0 ? 'active' : '') . '" aria-current="true" aria-label="Slide ' . ($counter + 1) . '"></button>';
+                    $counter++;
+                }
+
+                // Reset pointer for re-looping
+                $hasil->data_seek(0);
+                ?>
+            </div>
+            <div class="carousel-inner">
+                <?php
+                $counter = 0;
+
+                // Generate slides dynamically
+                while ($row = $hasil->fetch_assoc()) {
+                    echo '<div class="carousel-item ' . ($counter === 0 ? 'active' : '') . '">';
+                    echo '<img src="image/' . $row["gambar"] . '" class="d-block w-100" alt="Slide ' . ($counter + 1) . '">';
+                    echo '</div>';
+                    $counter++;
+                }
+                ?>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
-              </button>
-            </div>
+            </button>
         </div>
-    </section>
+    </div>
+</section>
+
     <!-- gallery end -->
     <!-- footer begin -->
     <footer class="ms-auto p-5 text-center">
@@ -289,7 +283,7 @@ include "koneksi.php";
       <section id="aboutme" class="text-center p-5 bg-danger-subtle text-sm-start">
           <div class="container justify-content-center">
           <div class="d-sm-flex flex-sm-row ms-5 align-items-center">
-                  <img src="https://lh3.googleusercontent.com/a/ACg8ocJJNxZOtk6i4LnCRpVW0g4RZlpD0O7rqi1pDO6yBzRvFcVU7qny=s360-c-no" class="img-fluid rounded-circle" width="300">
+                  <img src="image/profilsy.jpg " class="img-fluid rounded-circle" width="300">
               <div class="p-5">
                   <h5 class="lead">
                       A11.2023.15328
