@@ -283,7 +283,7 @@ include "koneksi.php";
     <div class="container d-flex justify-content-center align-items-center flex-column">
         <div class="d-flex flex-column flex-sm-row align-items-center">
             <img 
-                src="image/profilsy.jpg" 
+                src="https://imagedelivery.net/LBWXYQ-XnKSYxbZ-NuYGqQ/f69f1ba2-802c-4160-b24f-e54c5cffc200/avatarhd" 
                 class="img-fluid rounded-circle me-4 mb-4 mb-sm-0" 
                 width="300" 
                 alt="Foto Profil Muchamad Nafis Aljufri">
