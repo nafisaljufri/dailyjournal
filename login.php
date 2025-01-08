@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     />
     <link rel="icon" href="img/logo.png" />
   </head>
-  <body class="bg-warning-subtle">
+  <body class="bg-secondary-subtle">
   <div class="container mt-5 pt-5">
   <div class="row">
     <div class="col-12 col-sm-8 col-md-6 m-auto">
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               placeholder="Password"
             />
             <div class="text-center my-3 d-grid">
-              <button class="btn btn-warning rounded-4">Login</button>
+              <button class="btn btn-info text-light rounded-4"><b>Login<b></button>
             </div>
           </form>
         </div>

@@ -60,25 +60,26 @@ $(document).ready(function(){
 <?php
 include "upload_foto.php";
 
-//jika tombol simpan diklik
+// Jika tombol simpan diklik
 if (isset($_POST['simpan'])) {
+
     $tanggal = date("Y-m-d H:i:s");
     $username = $_SESSION['username'];
     $gambar = '';
     $nama_gambar = $_FILES['gambar']['name'];
 
-    //jika ada file yang dikirim  
+    // Jika ada file yang dikirim
     if ($nama_gambar != '') {
-		    //panggil function upload_foto untuk cek spesifikasi file yg dikirimkan user
-		    //function ini memiliki 2 keluaran yaitu status dan message
+        // Panggil function upload_foto untuk cek spesifikasi file yang dikirimkan user
+        // Function ini memiliki 2 keluaran yaitu status dan message
         $cek_upload = upload_foto($_FILES["gambar"]);
 
-				//cek status true/false
+        // Cek status true/false
         if ($cek_upload['status']) {
-		        //jika true maka message berisi nama file gambar
+            // Jika true maka message berisi nama file gambar
             $gambar = $cek_upload['message'];
         } else {
-		        //jika true maka message berisi pesan error, tampilkan dalam alert
+            // Jika gagal, tampilkan pesan error
             echo "<script>
                 alert('" . $cek_upload['message'] . "');
                 document.location='admin.php?page=gallery';
@@ -87,45 +88,110 @@ if (isset($_POST['simpan'])) {
         }
     }
 
-		//cek apakah ada id yang dikirimkan dari form
-    if (isset($_POST['id'])) {
-        //jika ada id,    lakukan update data dengan id tersebut
-        $id = $_POST['id'];
-
-        if ($nama_gambar == '') {
-            //jika tidak ganti gambar
-            $gambar = $_POST['gambar_lama'];
-        } else {
-            //jika ganti gambar, hapus gambar lama
-            unlink("image/" . $_POST['gambar_lama']);
-        }
-
-        $stmt = $conn->prepare("UPDATE gallery
-                                SET 
-                                gambar = ?,
-                                tanggal = ?,
-                                username = ?
-                                WHERE id = ?");
-
-        $stmt->bind_param("sssi", $gambar, $tanggal, $username, $id);
-        $simpan = $stmt->execute();
-    } else {
-		    //jika tidak ada id, lakukan insert data baru
-        $stmt = $conn->prepare("INSERT INTO gallery (gambar,tanggal,username)
-                                VALUES (?,?,?)");
-
+    // Cek apakah gambar baru diupload
+    if ($gambar != '') {
+        // Tambahkan gambar baru ke database
+        $stmt = $conn->prepare("INSERT INTO gallery (gambar, tanggal, username) 
+                                VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $gambar, $tanggal, $username);
+
+        // Eksekusi query
         $simpan = $stmt->execute();
+
+        if ($simpan) {
+            echo "<script>
+                alert('Data berhasil disimpan');
+                document.location='admin.php?page=gallery';
+            </script>";
+        } else {
+            echo "<script>
+                alert('Gagal menyimpan data');
+                document.location='admin.php?page=gallery';
+            </script>";
+        }
+    } else {
+        // Jika tidak ada gambar baru yang diupload, tampilkan error
+        echo "<script>
+            alert('Tidak ada gambar yang diupload');
+            document.location='admin.php?page=gallery';
+        </script>";
+        die;
     }
 
-    if ($simpan) {
+    // Tutup statement dan koneksi
+    $stmt->close();
+    $conn->close();
+}
+
+// Jika tombol perbarui diklik
+if (isset($_POST['perbarui'])) {
+    $tanggal = date("Y-m-d H:i:s");
+    $username = $_SESSION['username'];
+    $gambar = '';
+    $nama_gambar = $_FILES['gambar']['name'];
+
+    // Validasi dan upload gambar
+    if ($nama_gambar != '') {
+        // Panggil fungsi upload_foto untuk memvalidasi file
+        $cek_upload = upload_foto($_FILES["gambar"]);
+
+        if ($cek_upload['status']) {
+            $gambar = $cek_upload['message'];
+        } else {
+            echo "<script>
+                alert('" . $cek_upload['message'] . "');
+                document.location='admin.php?page=gallery';
+            </script>";
+            die;
+        }
+    } else {
         echo "<script>
-            alert('Simpan data sukses');
+            alert('Tidak ada gambar yang dipilih');
+            document.location='admin.php?page=gallery';
+        </script>";
+        die;
+    }
+
+    // Cek apakah gambar ada dalam database (untuk mengupdate gambar)
+    // Ini berfungsi hanya jika Anda ingin memperbarui gambar yang ada di database, tanpa melibatkan ID.
+    $stmt = $conn->prepare("SELECT gambar FROM gallery ORDER BY id DESC LIMIT 1"); // Ambil gambar terbaru
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // Jika ada gambar lama, hapus gambar lama sebelum mengupdate
+        $row = $result->fetch_assoc();
+        $gambar_lama = $row['gambar'];
+
+        // Hapus gambar lama jika ada gambar baru
+        if ($nama_gambar != '' && file_exists("image/" . $gambar_lama)) {
+            unlink("image/" . $gambar_lama);
+        }
+
+        // Update gambar terbaru
+        $stmt = $conn->prepare("UPDATE gallery 
+                                SET gambar = ?, 
+                                    tanggal = ?, 
+                                    username = ? 
+                                WHERE gambar = ?");
+        $stmt->bind_param("ssss", $gambar, $tanggal, $username, $gambar_lama);
+    } else {
+        // Jika tidak ada gambar sebelumnya, tambahkan gambar baru
+        $stmt = $conn->prepare("INSERT INTO gallery (gambar, tanggal, username) 
+                                VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $gambar, $tanggal, $username);
+    }
+
+    $perbarui = $stmt->execute();
+
+    if ($perbarui) {
+        echo "<script>
+            alert('Data berhasil disimpan');
             document.location='admin.php?page=gallery';
         </script>";
     } else {
         echo "<script>
-            alert('Simpan data gagal');
+            alert('Gagal menyimpan data');
             document.location='admin.php?page=gallery';
         </script>";
     }

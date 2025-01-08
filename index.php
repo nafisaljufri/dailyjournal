@@ -278,28 +278,33 @@ include "koneksi.php";
           </div>
       </section>
       <!-- hero end -->
-      <!-- aboutme -->
-      <section id="aboutme" class="text-center p-5 bg-danger-subtle text-sm-start">
-          <div class="container justify-content-center">
-          <div class="d-sm-flex flex-sm-row ms-5 align-items-center">
-                  <img src="image/profilsy.jpg " class="img-fluid rounded-circle" width="300">
-              <div class="p-5">
-                  <h5 class="lead">
-                      A11.2023.15328
-                  </h5>
-                  <h1 class="fw-bold display-4">
-                      Muchamad Nafis Aljufri
-                  </h1>
-                  <h6>
-                      Program Studi Teknik Informatika
-                  </h6>
-                  <h6 class="fw-bold">
-                      Universitas Dian Nuswantoro
-                  </h6>
-                  <br>
-              </div>
-          </div>
-      </section>
+      <!-- aboutme begin -->
+      <section id="aboutme" class="text-center p-5 bg-info-subtle">
+    <div class="container d-flex justify-content-center align-items-center flex-column">
+        <div class="d-flex flex-column flex-sm-row align-items-center">
+            <img 
+                src="image/profilsy.jpg" 
+                class="img-fluid rounded-circle me-4 mb-4 mb-sm-0" 
+                width="300" 
+                alt="Foto Profil Muchamad Nafis Aljufri">
+            <div class="text-start">
+                <h5 class="lead">
+                    A11.2023.15328
+                </h5>
+                <h1 class="fw-bold display-4">
+                    Muchamad Nafis Aljufri
+                </h1>
+                <h6>
+                    Program Studi Teknik Informatika
+                </h6>
+                <h6 class="fw-bold">
+                    Universitas Dian Nuswantoro
+                </h6>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- aboutme end -->
       <!-- footer begin -->
       <footer class="p-5 text-center">
                 <div>
